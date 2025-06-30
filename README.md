@@ -32,9 +32,6 @@ Bare-Minimum instructions to get a server running:
 # Pull the latest image:
 docker pull renegademaster/zomboid-dedicated-server:latest
 
-# Make two folders
-mkdir ZomboidConfig ZomboidDedicatedServer
-
 # Run the server (with bare minimum options):
 docker run --detach \
     --mount type=bind,source="$(pwd)/ZomboidDedicatedServer",target=/home/steam/ZomboidDedicatedServer \
@@ -84,21 +81,14 @@ runs [here](https://github.com/Renegade-Master/zomboid-dedicated-server/actions/
 
 ### Directories
 
-Two directories are required to be present on the host:
+Two directories are required to be present on the host, ideally inside your user's home directory:
 
-| Name               | Directory                | Description                                          |
-| ------------------ | ------------------------ | ---------------------------------------------------- |
-| Configuration Data | `ZomboidConfig`          | For storing the server configuration and save files. |
-| Installation Data  | `ZomboidDedicatedServer` | For storing the server game data.                    |
+| Name               | Directory                              | Description                                          |
+| ------------------ | -------------------------------------- | ---------------------------------------------------- |
+| Configuration Data | `~/ZomboidConfig`                      | For storing the server configuration and save files. |
+| Installation Data  | `~/ZomboidDedicatedServer`             | For storing the server game data.                    |
 
-These folders must be created in the directory that you intend to run the Docker image from. This could be a folder that
-you have created in some kind of "server directory", or it could be the root of this repository after you have cloned it
-down. **_If these folders are not present when the Docker image starts, you will get permissions errors_** (
-see [#8](https://github.com/Renegade-Master/zomboid-dedicated-server/issues/8)
-, [#14](https://github.com/Renegade-Master/zomboid-dedicated-server/issues/14)
-, [#17](https://github.com/Renegade-Master/zomboid-dedicated-server/issues/17)) because the Docker engine will create
-the folders at Container runtime. This creates them under the `root` user on the host which causes permissions
-conflicts.
+These folders should be created in your home directory (e.g., `/home/youruser/ZomboidConfig` and `/home/youruser/ZomboidDedicatedServer`) to avoid permission issues. If these folders are not present when the Docker image starts, you will get permissions errors (see [#8](https://github.com/Renegade-Master/zomboid-dedicated-server/issues/8), [#14](https://github.com/Renegade-Master/zomboid-dedicated-server/issues/14), [#17](https://github.com/Renegade-Master/zomboid-dedicated-server/issues/17)) because the Docker engine will create the folders at container runtime as `root`, causing permission conflicts.
 
 The 'Configuration Data' folder is where the server configuration and save files are stored. This folder can be opened
 and edited just like if you were running the server without Docker. You can backup your save files, or edit the server
@@ -210,11 +200,11 @@ The following are instructions for running the server using the Docker image.
    `published` ports below must also be changed\*
 
    ```shell
-   mkdir ZomboidConfig ZomboidDedicatedServer
+   mkdir -p ~/ZomboidConfig ~/ZomboidDedicatedServer
 
    docker run --detach \
-       --mount type=bind,source="$(pwd)/ZomboidDedicatedServer",target=/home/steam/ZomboidDedicatedServer \
-       --mount type=bind,source="$(pwd)/ZomboidConfig",target=/home/steam/Zomboid \
+       --mount type=bind,source="$HOME/ZomboidDedicatedServer",target=/home/steam/ZomboidDedicatedServer \
+       --mount type=bind,source="$HOME/ZomboidConfig",target=/home/steam/Zomboid \
        --publish 16261:16261/udp --publish 16262:16262/udp [--publish 27015:27015/tcp] \
        --name zomboid-server \
        [--restart=no] \
@@ -269,10 +259,10 @@ The following are instructions for running the server using Docker-Compose.
 
 3. Run the following commands:
 
-    - Make the data and configuration directories:
+    - Make the data and configuration directories in your home directory:
 
       ```shell
-      mkdir ZomboidConfig ZomboidDedicatedServer
+      mkdir -p ~/ZomboidConfig ~/ZomboidDedicatedServer
       ```
 
     - Pull the image from DockerHub:

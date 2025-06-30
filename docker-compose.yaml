@@ -16,39 +16,14 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-version: "3.8"
-
 services:
-  zomboid-dedicated-server:
+  conf-zomboid-server:
     build:
       context: .
-      dockerfile: docker/zomboid-dedicated-server.Dockerfile
+      dockerfile: docker/conf-zomboid-server.Dockerfile
     image: "docker.io/renegademaster/zomboid-dedicated-server:latest"
-    container_name: zomboid-dedicated-server
-    restart: "no"
-    environment:
-      - "ADMIN_PASSWORD=changeme"
-      - "ADMIN_USERNAME=superuser"
-      - "AUTOSAVE_INTERVAL=15"
-      - "BIND_IP=0.0.0.0"
-      - "DEFAULT_PORT=16261"
-      - "GAME_VERSION=public"
-      - "GC_CONFIG=ZGC"
-      - "MAP_NAMES=Muldraugh, KY"
-      - "MAX_PLAYERS=16"
-      - "MAX_RAM=4096m"
-      - "MOD_NAMES="
-      - "MOD_WORKSHOP_IDS="
-      - "PAUSE_ON_EMPTY=true"
-      - "PUBLIC_SERVER=true"
-      - "RCON_PASSWORD=changeme_rcon"
-      - "RCON_PORT=27015"
-      - "SERVER_NAME=ZomboidServer"
-      - "SERVER_PASSWORD="
-      - "STEAM_VAC=true"
-      - "UDP_PORT=16262"
-      - "USE_STEAM=true"
-      - "TZ=UTC"
+    container_name: conf-zomboid-server
+    restart: "unless-stopped"
     ports:
       - target: 16261
         published: 16261
@@ -60,5 +35,10 @@ services:
         published: 27015
         protocol: tcp
     volumes:
-      - ./ZomboidDedicatedServer:/home/steam/ZomboidDedicatedServer
-      - ./ZomboidConfig:/home/steam/Zomboid/
+      - ~/.config/conf/zomboid/dedicated_server:/home/steam/ZomboidDedicatedServer
+      - ~/.config/conf/zomboid/config:/home/steam/Zomboid/
+
+networks:
+  conf-zomboid-network:
+    name: conf-zomboid-network
+    driver: bridge
