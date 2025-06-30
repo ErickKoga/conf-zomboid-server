@@ -21,24 +21,20 @@ services:
     build:
       context: .
       dockerfile: docker/conf-zomboid-server.Dockerfile
-    image: "docker.io/renegademaster/zomboid-dedicated-server:latest"
+    image: docker.io/renegademaster/zomboid-dedicated-server:latest
     container_name: conf-zomboid-server
-    restart: "unless-stopped"
+    restart: unless-stopped
     ports:
-      - target: 16261
-        published: 16261
-        protocol: udp
-      - target: 16262
-        published: 16262
-        protocol: udp
-      - target: 27015
-        published: 27015
-        protocol: tcp
+      - "16261:16261/udp"
+      - "16262:16262/udp"
+      - "27015:27015/tcp"
     volumes:
-      - ~/.config/conf/zomboid/dedicated_server:/home/steam/ZomboidDedicatedServer
-      - ~/.config/conf/zomboid/config:/home/steam/Zomboid/
+      - /home/ekoga/config/zomboid/dedicated_server:/home/steam/ZomboidDedicatedServer
+      - /home/ekoga/config/zomboid/config:/home/steam/Zomboid
+    networks:
+      - conf-zomboid-network
 
 networks:
   conf-zomboid-network:
-    name: conf-zomboid-network
     driver: bridge
+    name: conf-zomboid-network
