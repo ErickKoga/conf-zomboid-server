@@ -1,0 +1,44 @@
+{
+  "version": "2",
+  "templates": [
+    {
+      "type": 2,
+      "title": "Project Zomboid Server",
+      "description": "Project Zomboid Dedicated Server",
+      "categories": ["game-server"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/Renegade-Master/zomboid-dedicated-server/main/assets/logo.png",
+      "repository": {
+        "url": "https://github.com/Renegade-Master/zomboid-dedicated-server",
+        "stackfile": "docker-compose.yaml"
+      },
+      "env": [
+        {
+          "name": "ADMIN_PASSWORD",
+          "label": "Admin Password",
+          "default": "changeme"
+        },
+        {
+          "name": "ADMIN_USERNAME", 
+          "label": "Admin Username",
+          "default": "superuser"
+        },
+        {
+          "name": "SERVER_NAME",
+          "label": "Server Name", 
+          "default": "ZomboidServer"
+        },
+        {
+          "name": "MAX_PLAYERS",
+          "label": "Max Players",
+          "default": "16"
+        },
+        {
+          "name": "SERVER_PASSWORD",
+          "label": "Server Password (optional)",
+          "default": ""
+        }
+      ]
+    }
+  ]
+}

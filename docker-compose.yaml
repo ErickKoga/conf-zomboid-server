@@ -24,13 +24,30 @@ services:
     image: docker.io/renegademaster/zomboid-dedicated-server:latest
     container_name: conf-zomboid-server
     restart: unless-stopped
+    environment:
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-changeme}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-superuser}
+      - SERVER_NAME=${SERVER_NAME:-ZomboidServer}
+      - MAX_PLAYERS=${MAX_PLAYERS:-16}
+      - SERVER_PASSWORD=${SERVER_PASSWORD:-}
+      - RCON_PASSWORD=${RCON_PASSWORD:-changeme_rcon}
+      - RCON_PORT=${RCON_PORT:-27015}
+      - DEFAULT_PORT=${DEFAULT_PORT:-16261}
+      - UDP_PORT=${UDP_PORT:-16262}
+      - MAX_RAM=${MAX_RAM:-4096m}
+      - MAP_NAMES=${MAP_NAMES:-Muldraugh, KY}
+      - PUBLIC_SERVER=${PUBLIC_SERVER:-true}
+      - PAUSE_ON_EMPTY=${PAUSE_ON_EMPTY:-true}
+      - STEAM_VAC=${STEAM_VAC:-true}
+      - USE_STEAM=${USE_STEAM:-true}
+      - TZ=${TZ:-UTC}
     ports:
       - "16261:16261/udp"
       - "16262:16262/udp"
       - "27015:27015/tcp"
     volumes:
-      - /home/ekoga/config/zomboid/dedicated_server:/home/steam/ZomboidDedicatedServer
-      - /home/ekoga/config/zomboid/config:/home/steam/Zomboid
+      - zomboid-server-data:/home/steam/ZomboidDedicatedServer
+      - zomboid-config-data:/home/steam/Zomboid
     networks:
       - conf-zomboid-network
 
@@ -38,3 +55,9 @@ networks:
   conf-zomboid-network:
     driver: bridge
     name: conf-zomboid-network
+
+volumes:
+  zomboid-server-data:
+    driver: local
+  zomboid-config-data:
+    driver: local
