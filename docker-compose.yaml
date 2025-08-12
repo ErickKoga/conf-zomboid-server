@@ -46,8 +46,8 @@ services:
       - "16262:16262/udp"
       - "27015:27015/tcp"
     volumes:
-      - zomboid-server-data:/home/steam/ZomboidDedicatedServer
-      - zomboid-config-data:/home/steam/Zomboid
+      - /home/ekoga/.config/conf/zomboid/ZomboidDedicatedServer:/home/steam/ZomboidDedicatedServer
+      - /home/ekoga/.config/conf/zomboid/Zomboid:/home/steam/Zomboid
     networks:
       - conf-zomboid-network
 
@@ -55,9 +55,3 @@ networks:
   conf-zomboid-network:
     driver: bridge
     name: conf-zomboid-network
-
-volumes:
-  zomboid-server-data:
-    driver: local
-  zomboid-config-data:
-    driver: local
