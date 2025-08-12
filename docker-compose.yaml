@@ -49,9 +49,9 @@ services:
       - /home/ekoga/.config/conf/zomboid/ZomboidDedicatedServer:/home/steam/ZomboidDedicatedServer
       - /home/ekoga/.config/conf/zomboid/Zomboid:/home/steam/Zomboid
     networks:
-      - conf-zomboid-network
+      - proxy-network
 
 networks:
-  conf-zomboid-network:
-    driver: bridge
-    name: conf-zomboid-network
+  proxy-network:
+    name: proxy-network
+    external: true
